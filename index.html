@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tasmanian Suburb Report Finder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; max-width: 800px; }
+    input, select { width: 100%; padding: 10px; font-size: 1rem; margin-bottom: 15px; }
+    .results { margin-top: 20px; }
+    .suburb-section { margin-bottom: 20px; }
+    .suburb-name { font-weight: bold; margin-top: 10px; }
+    a { display: block; margin: 3px 0; color: #1a73e8; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    @media (max-width: 600px) {
+      body { margin: 10px; font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <h2>Search Suburb Reports</h2>
+  <input type="text" id="suburbSearch" placeholder="Search by suburb...">
+  <select id="municipalitySelect">
+    <option value="">-- Select a municipality --</option>
+  </select>
+  <div class="results" id="results"></div>
+
+  <script>
+    let suburbData = [];
+
+    fetch('suburb_reports_data.json')
+      .then(response => response.json())
+      .then(data => {
+        suburbData = data;
+        populateMunicipalityList(data);
+        setupSuburbSearch(data);
+      });
+
+    function populateMunicipalityList(data) {
+      const select = document.getElementById('municipalitySelect');
+      const municipalities = [...new Set(data.map(d => d.Municipality))].sort();
+      municipalities.forEach(muni => {
+        const option = document.createElement('option');
+        option.value = muni;
+        option.textContent = muni;
+        select.appendChild(option);
+      });
+      select.addEventListener('change', () => {
+        const selected = select.value;
+        const results = data.filter(d => d.Municipality === selected);
+        displayResults(results);
+      });
+    }
+
+    function setupSuburbSearch(data) {
+      const input = document.getElementById('suburbSearch');
+      input.addEventListener('input', () => {
+        const query = input.value.toLowerCase();
+        const results = data.filter(d => d.Suburb.toLowerCase().includes(query));
+        displayResults(results);
+      });
+    }
+
+    function displayResults(results) {
+      const container = document.getElementById('results');
+      container.innerHTML = '';
+      results.forEach(entry => {
+        const div = document.createElement('div');
+        div.className = 'suburb-section';
+        const title = document.createElement('div');
+        title.className = 'suburb-name';
+        title.textContent = `${entry.Suburb} (${entry.Municipality})`;
+        div.appendChild(title);
+
+        const reports = ['Houses', 'Other', 'Land', 'Rental'];
+        reports.forEach(type => {
+          if (entry[type]) {
+            const link = document.createElement('a');
+            link.href = entry[type];
+            link.textContent = `${type} Report`;
+            link.target = '_blank';
+            div.appendChild(link);
+          }
+        });
+
+        container.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>
