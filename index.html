@@ -6,15 +6,39 @@
   <title>REIT Suburb Report Finder</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; max-width: 1000px; background: #f9f9f9; }
-    input, select { width: 100%; padding: 10px; font-size: 1rem; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px; }
-    .results { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 20px; }
+    body { font-family: Arial, sans-serif; margin: 0; background: #f9f9f9; }
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: #ffffff;
+      padding: 15px 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .header h2 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      color: #2E6B52;
+    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .results {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
     .card {
       background: #fff;
       border-radius: 10px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      width: 100%;
-      max-width: 450px;
       display: flex;
       flex-direction: column;
     }
@@ -45,18 +69,22 @@
       margin-right: 8px;
       font-size: 1.2rem;
     }
-    @media (max-width: 600px) {
-      .card { width: 100%; }
-    }
   </style>
 </head>
 <body>
-  <h2>Search Suburb Reports</h2>
-  <input type="text" id="suburbSearch" placeholder="Search by suburb...">
-  <select id="municipalitySelect">
-    <option value="">-- Select a municipality --</option>
-  </select>
-  <div class="results" id="results"></div>
+  <div class="header">
+    <div class="container">
+      <h2>Tasmanian Suburb Report Finder</h2>
+      <input type="text" id="suburbSearch" placeholder="Search by suburb...">
+      <select id="municipalitySelect">
+        <option value="">-- Select a municipality --</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="results" id="results"></div>
+  </div>
 
   <script>
     let suburbData = [];
