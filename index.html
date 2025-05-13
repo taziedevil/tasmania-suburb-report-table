@@ -5,8 +5,14 @@
   <meta charset="UTF-8">
   <title>REIT Suburb Report Finder</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; background: #f9f9f9; }
+    body {
+      font-family: 'Open Sans', sans-serif;
+      margin: 0;
+      background: #f9f9f9;
+      scroll-behavior: smooth;
+    }
     .header {
       position: sticky;
       top: 0;
@@ -20,7 +26,11 @@
       margin-bottom: 10px;
       color: #2E6B52;
     }
-    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
     input, select {
       width: 100%;
       padding: 10px;
@@ -41,11 +51,19 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       display: flex;
       flex-direction: column;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.6s ease forwards;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
     }
     .card-header {
       background-color: #2E6B52;
       color: white;
-      font-weight: bold;
+      font-weight: 600;
       padding: 12px;
       border-top-left-radius: 10px;
       border-top-right-radius: 10px;
@@ -57,17 +75,30 @@
     .card-body a {
       display: flex;
       align-items: center;
-      margin: 6px 0;
+      margin: 8px 0;
       text-decoration: none;
       color: #2E6B52;
       font-size: 1rem;
+      transition: color 0.2s ease;
     }
     .card-body a:hover {
+      color: #1a4a3b;
       text-decoration: underline;
     }
     .icon {
-      margin-right: 8px;
-      font-size: 1.2rem;
+      margin-right: 10px;
+      font-size: 1.3rem;
+    }
+    .icon.houses { color: #2E6B52; }
+    .icon.other { color: #3A82B3; }
+    .icon.land { color: #6A994E; }
+    .icon.rental { color: #DAA520; }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
@@ -137,10 +168,10 @@
         body.className = 'card-body';
 
         const links = [
-          { type: 'Houses', icon: '🏠' },
-          { type: 'Other', icon: '🏢' },
-          { type: 'Land', icon: '🌱' },
-          { type: 'Rental', icon: '🔑' }
+          { type: 'Houses', icon: '🏠', class: 'houses' },
+          { type: 'Other', icon: '🏢', class: 'other' },
+          { type: 'Land', icon: '🌱', class: 'land' },
+          { type: 'Rental', icon: '🔑', class: 'rental' }
         ];
 
         links.forEach(link => {
@@ -148,7 +179,7 @@
             const a = document.createElement('a');
             a.href = entry[link.type];
             a.target = '_blank';
-            a.innerHTML = `<span class="icon">${link.icon}</span>${link.type} Report`;
+            a.innerHTML = `<span class="icon ${link.class}">${link.icon}</span>${link.type} Report`;
             body.appendChild(a);
           }
         });
