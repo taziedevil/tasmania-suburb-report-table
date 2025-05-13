@@ -208,25 +208,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Add suburb count
-    function displayResults(results) {
-      const container = document.getElementById('results');
-      container.innerHTML = '';
-
-      // Ensure suburb count goes above the grid
-      const countDiv = document.getElementById('suburbCount');
-      countDiv.textContent = `Showing ${results.length} suburb${results.length > 1 ? 's' : ''}`;
-
-      if (results.length > 0) {
-        const countDiv = document.createElement('div');
-        countDiv.textContent = `Showing ${results.length} suburb${results.length > 1 ? 's' : ''}`;
-        countDiv.style.marginBottom = '15px';
-        countDiv.style.fontWeight = '600';
-        countDiv.style.color = '#2E6B52';
-        container.appendChild(countDiv);
-      }
-
-      results.forEach(entry => {
+        results.forEach(entry => {
         const card = document.createElement('div');
         card.className = 'card';
 
